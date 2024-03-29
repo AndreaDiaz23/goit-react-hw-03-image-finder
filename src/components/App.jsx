@@ -8,6 +8,7 @@ import Loader from './Loader/Loader.jsx';
 import Modal from './Modal/Modal.jsx';
 import Styles from './app.module.css';
 
+
 class App extends Component {
   state = {
     query: '',
