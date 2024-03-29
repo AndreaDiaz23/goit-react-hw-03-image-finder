@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Searchbar from './searchbar/Searchbar.jsx';
-import ImageGallery from './imageGallery/ImageGallery.jsx';
-import ImageGalleryItem from './imageGalleryItem/ImageGalleryItem.jsx';
-import Button from './button/Button.jsx';
-import Loader from './loader/Loader.jsx';
-import Modal from './modal/Modal.jsx';
+import Searchbar from './Searchbar/Searchbar.jsx';
+import ImageGallery from './ImageGallery/ImageGallery.jsx';
+import ImageGalleryItem from './ImageGalleryItem/ImageGalleryItem.jsx';
+import Button from './Button/Button.jsx';
+import Loader from './Loader/Loader.jsx';
+import Modal from './Modal/Modal.jsx';
 import Styles from './app.module.css';
 
 class App extends Component {
@@ -18,7 +18,7 @@ class App extends Component {
     largeImageURL: '',
   };
 
-  handleSubmit = (query) => {
+  handleSubmit = query => {
     this.setState({ query, images: [], page: 1 }, this.fetchImages);
   };
 
@@ -31,20 +31,20 @@ class App extends Component {
 
     axios
       .get(url)
-      .then((response) => {
-        this.setState((prevState) => ({
+      .then(response => {
+        this.setState(prevState => ({
           images: [...prevState.images, ...response.data.hits],
           page: prevState.page + 1,
         }));
       })
-      .catch((error) => console.error('Error fetching images:', error))
+      .catch(error => console.error('Error fetching images:', error))
       .finally(() => {
         this.setState({ loading: false });
       });
   };
 
   handleLoadMore = async () => {
-    console.log('hola')
+    console.log('hola');
     await this.fetchImages();
     window.scrollTo({
       top: document.documentElement.scrollHeight,
@@ -52,7 +52,6 @@ class App extends Component {
     });
   };
 
-  
   handleImageClick = largeImageURL => {
     console.log('Que hay aqui');
     this.setState({ showModal: true, largeImageURL: largeImageURL });
@@ -68,24 +67,30 @@ class App extends Component {
     return (
       <div className={Styles.App}>
         <Searchbar onSubmit={this.handleSubmit} />
-        <ImageGallery> 
-          {images.map((image) => (
-            <ImageGalleryItem            
+        <ImageGallery>
+          {images.map(image => (
+            <ImageGalleryItem
               key={image.id}
               src={image.webformatURL}
               alt={image.tags}
               onClick={() => {
                 console.log('Se está llamando a handleImageClick');
-                this.handleImageClick(image.largeImageURL)}}
+                this.handleImageClick(image.largeImageURL);
+              }}
             />
           ))}
         </ImageGallery>
         <div className={Styles.Button_container}>
-        {loading && <Loader />}
-        {images.length > 0 && !loading && <Button onClick={this.handleLoadMore} />}
-        {showModal && (
-          <Modal onClose={this.handleCloseModal} largeImageURL={largeImageURL} />
-        )}
+          {loading && <Loader />}
+          {images.length > 0 && !loading && (
+            <Button onClick={this.handleLoadMore} />
+          )}
+          {showModal && (
+            <Modal
+              onClose={this.handleCloseModal}
+              largeImageURL={largeImageURL}
+            />
+          )}
         </div>
       </div>
     );
@@ -93,7 +98,6 @@ class App extends Component {
 }
 
 export default App;
-
 
 /* export const App = () => {
   return (
